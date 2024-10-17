@@ -1,0 +1,73 @@
+/* Estilo geral */
+body {
+    background-color: #2c2c2c; /* Fundo escuro */
+    color: #ffffff; /* Texto claro para contraste */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Barra de navegação superior */
+.navbar {
+    background-color: #000000; /* Barra preta */
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Título no centro */
+.navbar h1 {
+    color: #ffffff;
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Links da barra */
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0 15px;
+}
+
+.navbar a:hover {
+    color: #f0a500; /* Cor de destaque ao passar o mouse */
+}
+
+.container {
+    margin: 20px;
+}
+
+/* Botões */
+button {
+    background-color: #f0a500;
+    color: #000000;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ffaa00;
+}
+
+/* Adiciona bordas arredondadas e espaço entre botões */
+button {
+    border-radius: 10px; /* Borda arredondada */
+    margin: 5px 0; /* Espaço vertical */
+    padding: 10px 15px; /* Espaçamento interno dos botões */
+}
+
+/* Ajuste adicional para o botão de deletar, se necessário */
+form {
+    display: inline; /* Para que o botão de deletar fique ao lado do botão de editar */
+    margin-left: 5px; /* Espaço entre editar e deletar */
+}
+
+
+form input[type="text"], form input[type="submit"] {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #dddddd;
+}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} Montadoras {% endblock %}
+
+{% block title_page %} Lista de Montadoras Cadastradas {% endblock %}
+
+{% block content %}
+
+    <!-- Formulário de Filtro -->
+    <form method="get" action="/montadoras_list">
+        <input type="text" name="nome" placeholder="Filtrar por nome" value="{{ request.query_params.get('nome', '') }}">
+        <input type="text" name="pais" placeholder="Filtrar por país" value="{{ request.query_params.get('pais', '') }}">
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <ul>
+        {% for montadora in montadoras %}
+            <li>
+                {{ montadora.nome }} - {{ montadora.pais }}
+                <button>
+                    <a href="/montadora_edit/{{ montadora.id }}">Editar</a>
+                </button>
+                <form action="/montadora_delete/{{ montadora.id }}" method="post" style="display:inline;">
+                    <button type="submit">Deletar</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
