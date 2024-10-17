@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from models import Montadora
 from persistence.database import get_db
 from persistence.montadora_repository import MontadoraRepository
-from view_models import InputMontadora
 
 app = FastAPI()
 
@@ -62,8 +61,6 @@ def montadora_update(id: str, nome: str = Form(...), pais: str = Form(...), ano:
         print(f"Montadora com ID {id} não encontrada.")
         
     return RedirectResponse('/montadoras_list', status_code=303)
-
-
 
 @app.post('/montadora_delete/{id}')
 def montadora_delete(id: str, db: Session = Depends(get_db)):

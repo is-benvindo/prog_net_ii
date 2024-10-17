@@ -16,7 +16,7 @@
     <ul>
         {% for montadora in montadoras %}
             <li>
-                {{ montadora.nome }} - {{ montadora.pais }}
+                {{ montadora.nome }} - {{ montadora.pais }} - {{ montadora.ano_fundacao }}
                 <button>
                     <a href="/montadora_edit/{{ montadora.id }}">Editar</a>
                 </button>
