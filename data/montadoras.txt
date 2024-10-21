@@ -1,0 +1,3 @@
+Ford;Estados Unidos;1903
+Toyota;Jap�o;1937
+Tesla;Estados Unidos;2003

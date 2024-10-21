@@ -5,7 +5,7 @@ from alembic import context
 
 # Importando o Base do seu projeto
 from persistence.database import Base
-from models import Montadora  # Certifique-se de importar o modelo Montadora
+from models.models import Montadora  # Certifique-se de importar o modelo Montadora
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

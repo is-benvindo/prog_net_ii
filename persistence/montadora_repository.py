@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Montadora
+from models.models import Montadora
 
 class MontadoraRepository:
     
@@ -16,7 +16,6 @@ class MontadoraRepository:
         return db.query(Montadora).filter(Montadora.id == id).first()
 
 
-
     def save(self, db: Session, montadora: Montadora):
         db.add(montadora)
         db.commit()
@@ -25,19 +24,18 @@ class MontadoraRepository:
     def update(self, db: Session, id: str, montadora_data: Montadora):
         montadora = db.query(Montadora).filter(Montadora.id == id).first()
         if not montadora:
-            return None  # Retorna None se a montadora não for encontrada
+            return None
 
         try:
-        # Atualiza os dados da montadora
             montadora.nome = montadora_data.nome
             montadora.pais = montadora_data.pais
             montadora.ano_fundacao = montadora_data.ano_fundacao
         
             db.commit()
             db.refresh(montadora)
-            return montadora  # Retorna a montadora atualizada
+            return montadora 
         except Exception as e:
-            db.rollback()  # Reverte a transação em caso de erro
+            db.rollback()
             print(f"Erro ao atualizar montadora: {e}")
             return None
 
@@ -47,3 +45,5 @@ class MontadoraRepository:
         if montadora:
             db.delete(montadora)
             db.commit()
+            
+            
