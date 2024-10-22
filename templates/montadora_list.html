@@ -6,14 +6,12 @@
 
 {% block content %}
 
-    <!-- Formulário de Filtro -->
     <form method="get" action="/montadoras_list">
         <input type="text" name="nome" placeholder="Filtrar por nome" value="{{ request.query_params.get('nome', '') }}">
         <input type="text" name="pais" placeholder="Filtrar por país" value="{{ request.query_params.get('pais', '') }}">
         <button type="submit">Filtrar</button>
     </form>
-
-    <!-- Exibe a contagem de montadoras -->
+    
     <div class="status">
         <h3>Status dos Cadastros</h3>
         <p>Temos {{ total_montadoras }} Montadoras Cadastradas:</p>

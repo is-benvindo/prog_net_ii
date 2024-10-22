@@ -76,12 +76,10 @@ import os
 
 @app.get('/montadora_save_txt')
 def salvar_dados_em_arquivo(db: Session = Depends(get_db)):
-    # Caminho para a pasta data
     data_folder = 'data'
     if not os.path.exists(data_folder):
-        os.makedirs(data_folder)  # Cria a pasta se não existir
+        os.makedirs(data_folder)
 
-    # Salvar montadoras
     montadoras = montadora_repository.get_all(db) 
     montadoras_file_path = os.path.join(data_folder, 'montadoras.txt')
     
@@ -90,8 +88,8 @@ def salvar_dados_em_arquivo(db: Session = Depends(get_db)):
             linha = f"{montadora.nome};{montadora.pais};{montadora.ano_fundacao}\n" 
             file.write(linha)
 
-    # Salvar modelos (da mesma forma)
-    modelos = modelo_repository.get_all(db)  # Supondo que você tenha um repositório para modelos
+   
+    modelos = modelo_repository.get_all(db) 
     modelos_file_path = os.path.join(data_folder, 'modelos.txt')
 
     with open(modelos_file_path, 'w') as file:
@@ -106,21 +104,20 @@ def salvar_dados_em_arquivo(db: Session = Depends(get_db)):
 @app.get("/montadora/{montadora_id}/modelos_list")
 def modelos_list(montadora_id: str, request: Request, db: Session = Depends(get_db)):
     montadora = db.query(Montadora).filter(Montadora.id == montadora_id).first()
-    modelos = db.query(Modelo).filter(Modelo.montadora_id == montadora_id).all()  # Alterado aqui
+    modelos = db.query(Modelo).filter(Modelo.montadora_id == montadora_id).all()
     
     return templates.TemplateResponse("modelos_list.html", {"request": request, "montadora": montadora, "modelos": modelos})
 
 @app.get('/modelo_form/{montadora_id}')
 @app.get('/modelo_form/{montadora_id}/{modelo_id: int = None}')
 def modelo_form(request: Request, montadora_id: str, modelo_id: Optional[int] = None, db: Session = Depends(get_db)):
-    # Busque a montadora pelo ID
     montadora = db.query(Montadora).filter(Montadora.id == montadora_id).first()
     if not montadora:
         raise HTTPException(status_code=404, detail="Montadora não encontrada")
 
-    modelo = None  # Inicializa como None, assume que estamos adicionando um novo modelo
+    modelo = None
 
-    # Se um modelo_id for fornecido, busque o modelo correspondente
+
     if modelo_id is not None:
         modelo = db.query(Modelo).filter(Modelo.id == modelo_id, Modelo.montadora_id == montadora_id).first()
         if not modelo:
@@ -130,7 +127,7 @@ def modelo_form(request: Request, montadora_id: str, modelo_id: Optional[int] = 
         'request': request,
         'montadora_id': montadora_id,
         'montadora': montadora,
-        'modelo': modelo  # Esta linha pode ser None se for um novo modelo
+        'modelo': modelo  
     })
 
 
@@ -158,21 +155,18 @@ def modelo_save(
         modelo_repository.save(db, modelo)
         return RedirectResponse(f'/montadora/{montadora_id}/modelos_list', status_code=303)
     except Exception as e:
-        return {"error": str(e)}  # Retorna o erro como resposta JSON
+        return {"error": str(e)} 
 
 @app.post('/modelos_delete/{modelo_id}')
 def modelos_delete(modelo_id: str, db: Session = Depends(get_db)):
-    # Obtém o modelo antes de deletá-lo
     modelo = modelo_repository.get_by_id(db, modelo_id)
     if modelo is None:
         return {"error": "Modelo não encontrado."}
     
-    montadora_id = modelo.montadora_id  # Armazena o montadora_id antes da deleção
+    montadora_id = modelo.montadora_id 
 
-    # Deleta o modelo
     modelo_repository.delete(db, modelo_id)
 
-    # Redireciona de volta para a lista de modelos da montadora associada
     return RedirectResponse(f'/montadora/{montadora_id}/modelos_list', status_code=303)
 
 
@@ -195,25 +189,21 @@ def modelo_update(
     automatico: bool = Form(...),
     db: Session = Depends(get_db)
 ):
-    # Validação da motorização
     try:
         motorizacao_float = float(motorizacao)
     except ValueError:
         return {"error": "Motorização deve ser um número válido."}
 
-    # Obtendo o modelo existente
     modelo_existente = modelo_repository.get_by_id(db, modelo_id)
     if not modelo_existente:
         return {"error": "Modelo não encontrado."}
 
-    # Atualizando as informações do modelo
     modelo_existente.nome = nome
     modelo_existente.valor_referencia = valor_referencia
     modelo_existente.motorizacao = motorizacao_float
     modelo_existente.turbo = turbo
     modelo_existente.automatico = automatico
 
-    # Chamando a função de atualização
     modelo_repository.update(db, modelo_existente)
 
     return RedirectResponse(f'/montadora/{modelo_existente.montadora_id}/modelos_list', status_code=303)
@@ -225,28 +215,25 @@ def modelos_list(
     montadora_id: str, 
     nome: str = '', 
     automatico: str = '', 
-    motorizacao: Optional[str] = None,  # Alterado para Optional[str]
+    motorizacao: Optional[str] = None, 
     db: Session = Depends(get_db)
 ):
-    # Busca a montadora
+
     montadora = db.query(Montadora).filter(Montadora.id == montadora_id).first()
 
-    # Inicia a consulta para modelos
     query = db.query(Modelo).filter(Modelo.montadora_id == montadora_id)
-
-    # Adiciona filtros se os parâmetros forem fornecidos
+    
     if nome:
         query = query.filter(Modelo.nome.ilike(f'%{nome}%'))  
     if automatico:
         query = query.filter(Modelo.automatico == (automatico.lower() == 'true'))  
-    if motorizacao:  # Verifica se motorizacao não é None ou string vazia
+    if motorizacao: 
         try:
-            motorizacao_value = float(motorizacao)  # Tenta converter motorizacao para float
+            motorizacao_value = float(motorizacao)
             query = query.filter(Modelo.motorizacao == motorizacao_value)
         except ValueError:
-            pass  # Ignora o filtro se não for um valor válido
+            pass 
 
-    # Executa a consulta e obtém os resultados
     modelos = query.all()
 
     return templates.TemplateResponse('modelos_list.html', {

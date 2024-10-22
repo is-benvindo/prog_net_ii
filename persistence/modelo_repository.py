@@ -10,21 +10,21 @@ class ModeloRepository:
     def get_by_id(self, db: Session, id: str):
         return db.query(Modelo).filter(Modelo.id == id).first()
 
-    def save(self, db: Session, modelo: Modelo):  # Alterado de veiculo para modelo
+    def save(self, db: Session, modelo: Modelo): 
         try:
-            db.add(modelo)  # Alterado de veiculo para modelo
+            db.add(modelo)  
             db.commit()
-            db.refresh(modelo)  # Alterado de veiculo para modelo
-            return modelo  # Alterado de veiculo para modelo
+            db.refresh(modelo)  
+            return modelo  
         except SQLAlchemyError as e:
             db.rollback() 
             raise e
 
-    def update(self, db: Session, modelo: Modelo):  # Alterado de veiculo para modelo
+    def update(self, db: Session, modelo: Modelo): 
         try:
-            db.merge(modelo)  # Alterado de veiculo para modelo
+            db.merge(modelo)  
             db.commit()
-            return modelo  # Alterado de veiculo para modelo
+            return modelo  
         except SQLAlchemyError as e:
             db.rollback()
             raise e
@@ -33,9 +33,9 @@ class ModeloRepository:
         modelo = self.get_by_id(db, id)
         if modelo:
             try:
-                db.delete(modelo)  # Alterado de veiculo para modelo
+                db.delete(modelo)  
                 db.commit()
-                return modelo  # Alterado de veiculo para modelo
+                return modelo  
             except SQLAlchemyError as e:
                 db.rollback() 
                 raise e 

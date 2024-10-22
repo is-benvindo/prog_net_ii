@@ -7,7 +7,6 @@
 {% block content %}
     <h2>Modelos da Montadora: {{ montadora.nome }}</h2>
 
-    <!-- Formulário de Filtro -->
     <form method="get" action="/modelos_list/{{ montadora.id }}">
         <input type="text" name="nome" placeholder="Filtrar por modelo" value="{{ request.query_params.get('nome', '') }}">
         
@@ -23,7 +22,6 @@
         <button type="submit">Filtrar</button>
     </form>
 
-    <!-- Botão Adicionar Modelo -->
     <button>
         <a href="/modelo_form/{{ montadora.id }}" class="btn btn-secondary">Adicionar Modelo</a>
     </button>
