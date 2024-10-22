@@ -72,14 +72,36 @@ def montadora_delete(id: str, db: Session = Depends(get_db)):
     montadora_repository.delete(db, id)
     return RedirectResponse('/montadoras_list', status_code=303)
 
+import os
+
 @app.get('/montadora_save_txt')
 def salvar_dados_em_arquivo(db: Session = Depends(get_db)):
+    # Caminho para a pasta data
+    data_folder = 'data'
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)  # Cria a pasta se não existir
+
+    # Salvar montadoras
     montadoras = montadora_repository.get_all(db) 
-    with open('montadoras.txt', 'w') as file:
+    montadoras_file_path = os.path.join(data_folder, 'montadoras.txt')
+    
+    with open(montadoras_file_path, 'w') as file:
         for montadora in montadoras:
             linha = f"{montadora.nome};{montadora.pais};{montadora.ano_fundacao}\n" 
             file.write(linha)
+
+    # Salvar modelos (da mesma forma)
+    modelos = modelo_repository.get_all(db)  # Supondo que você tenha um repositório para modelos
+    modelos_file_path = os.path.join(data_folder, 'modelos.txt')
+
+    with open(modelos_file_path, 'w') as file:
+        for modelo in modelos:
+            linha = f"{modelo.nome};{modelo.valor_referencia};{modelo.motorizacao};{modelo.turbo};{modelo.automatico}\n"
+            file.write(linha)
+
     return RedirectResponse('/montadoras_list', status_code=303)
+
+
 
 @app.get("/montadora/{montadora_id}/modelos_list")
 def modelos_list(montadora_id: str, request: Request, db: Session = Depends(get_db)):
@@ -197,3 +219,38 @@ def modelo_update(
     return RedirectResponse(f'/montadora/{modelo_existente.montadora_id}/modelos_list', status_code=303)
 
 
+@app.get('/modelos_list/{montadora_id}')
+def modelos_list(
+    request: Request, 
+    montadora_id: str, 
+    nome: str = '', 
+    automatico: str = '', 
+    motorizacao: Optional[str] = None,  # Alterado para Optional[str]
+    db: Session = Depends(get_db)
+):
+    # Busca a montadora
+    montadora = db.query(Montadora).filter(Montadora.id == montadora_id).first()
+
+    # Inicia a consulta para modelos
+    query = db.query(Modelo).filter(Modelo.montadora_id == montadora_id)
+
+    # Adiciona filtros se os parâmetros forem fornecidos
+    if nome:
+        query = query.filter(Modelo.nome.ilike(f'%{nome}%'))  
+    if automatico:
+        query = query.filter(Modelo.automatico == (automatico.lower() == 'true'))  
+    if motorizacao:  # Verifica se motorizacao não é None ou string vazia
+        try:
+            motorizacao_value = float(motorizacao)  # Tenta converter motorizacao para float
+            query = query.filter(Modelo.motorizacao == motorizacao_value)
+        except ValueError:
+            pass  # Ignora o filtro se não for um valor válido
+
+    # Executa a consulta e obtém os resultados
+    modelos = query.all()
+
+    return templates.TemplateResponse('modelos_list.html', {
+        'request': request,
+        'montadora': montadora,
+        'modelos': modelos
+    })

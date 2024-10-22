@@ -1,0 +1,6 @@
+EcoSport;90000.0;1.5;False;True
+Ford Ranger;190000.0;2.2;True;True
+Mustang GT;300000.0;5.0;False;True
+Corolla;120000.0;2.0;False;True
+Hilux;190000.0;2.8;True;True
+Model 3;280000.0;346.0;False;True

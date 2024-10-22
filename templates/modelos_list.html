@@ -7,6 +7,22 @@
 {% block content %}
     <h2>Modelos da Montadora: {{ montadora.nome }}</h2>
 
+    <!-- Formulário de Filtro -->
+    <form method="get" action="/modelos_list/{{ montadora.id }}">
+        <input type="text" name="nome" placeholder="Filtrar por modelo" value="{{ request.query_params.get('nome', '') }}">
+        
+        <label for="automatico">Transmissão:</label>
+        <select name="automatico" id="automatico">
+            <option value="">-- Selecione --</option>
+            <option value="true" {% if request.query_params.get('automatico') == 'true' %}selected{% endif %}>Automático</option>
+            <option value="false" {% if request.query_params.get('automatico') == 'false' %}selected{% endif %}>Manual</option>
+        </select>
+
+        <input type="number" name="motorizacao" placeholder="Filtrar por motorização" value="{{ request.query_params.get('motorizacao', '') }}" step="0.1" min="0">
+        
+        <button type="submit">Filtrar</button>
+    </form>
+
     <!-- Botão Adicionar Modelo -->
     <button>
         <a href="/modelo_form/{{ montadora.id }}" class="btn btn-secondary">Adicionar Modelo</a>
