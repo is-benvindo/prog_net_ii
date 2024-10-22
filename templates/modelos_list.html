@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Modelos da Montadora{% endblock %}
+
+{% block title_page %}{{ montadora.nome }}{% endblock %}
+
+{% block content %}
+    <h2>Modelos da Montadora: {{ montadora.nome }}</h2>
+
+    <!-- Botão Adicionar Modelo -->
+    <button>
+        <a href="/modelo_form/{{ montadora.id }}" class="btn btn-secondary">Adicionar Modelo</a>
+    </button>
+
+    <ul>
+        {% for modelo in modelos %}
+            <li>
+                {{ modelo.nome }} - R$ {{ modelo.valor_referencia }} - {{ modelo.motorizacao }} - {{ 'Turbo' if modelo.turbo else 'Sem Turbo' }} - {{ 'Automático' if modelo.automatico else 'Manual' }}
+                <button>
+                    <a href="/modelos_edit/{{ modelo.id }}" class="btn btn-primary">Editar</a>
+                </button>
+                <form action="/modelos_delete/{{ modelo.id }}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este modelo?');">Deletar</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

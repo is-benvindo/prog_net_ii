@@ -22,7 +22,7 @@
     <ul>
         {% for montadora in montadoras %}
             <li>
-                {{ montadora.nome }} - {{ montadora.pais }} - {{ montadora.ano_fundacao }}
+                <strong><a href="/montadora/{{ montadora.id }}/modelos_list">{{ montadora.nome }}</a></strong> - {{ montadora.pais }} - {{ montadora.ano_fundacao }}
                 <button>
                     <a href="/montadoras_edit/{{ montadora.id }}" class="btn btn-primary">Editar</a>
                 </button>
@@ -34,39 +34,5 @@
     </ul>
 
     <hr>
-
-    <!-- 
-    <h3>Adicionar Novo Veículo</h3>
-    <form id="form-veiculo" action="/adicionar-veiculo" method="POST">
-        <label for="montadora">Selecione a Montadora:</label>
-        <select id="montadora" name="montadora_id" required>
-            {% for montadora in montadoras %}
-                <option value="{{ montadora.id }}">{{ montadora.nome }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="nome">Nome do Veículo:</label>
-        <input type="text" id="nome" name="nome" required>
-
-        <label for="valor_referencia">Valor de Referência:</label>
-        <input type="number" id="valor_referencia" name="valor_referencia" step="0.01" required>
-
-        <label for="motorizacao">Motorização:</label>
-        <input type="number" id="motorizacao" name="motorizacao" step="0.01" required>
-
-        <label for="turbo">Possui Turbo?</label>
-        <select id="turbo" name="turbo" required>
-            <option value="true">Sim</option>
-            <option value="false">Não</option>
-        </select>
-
-        <label for="automatico">É Automático?</label>
-        <select id="automatico" name="automatico" required>
-            <option value="true">Sim</option>
-            <option value="false">Não</option>
-        </select>
-
-        <button type="submit">Adicionar Veículo</button>
-    </form>
--->
+    
 {% endblock %}

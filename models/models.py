@@ -5,7 +5,6 @@ import uuid
 from persistence.database import Base
 
 
-# Modelo da tabela Montadora
 class Montadora(Base):
     __tablename__ = 'montadora'
 
@@ -14,11 +13,11 @@ class Montadora(Base):
     pais = Column(String)
     ano_fundacao = Column(Integer)
 
-    veiculos = relationship("Veiculo", back_populates="montadora")
+    modelos = relationship("Modelo", back_populates="montadora")
 
-# Modelo da tabela Veiculo
-class Veiculo(Base):
-    __tablename__ = 'veiculo'
+
+class Modelo(Base):
+    __tablename__ = 'modelo' 
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     nome = Column(String, nullable=False)
@@ -28,4 +27,4 @@ class Veiculo(Base):
     turbo = Column(Boolean, default=False)
     automatico = Column(Boolean, default=False)
 
-    montadora = relationship("Montadora", back_populates="veiculos")
+    montadora = relationship("Montadora", back_populates="modelos")
