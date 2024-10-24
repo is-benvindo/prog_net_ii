@@ -10,14 +10,14 @@ from typing import Optional
 
 class InputModelo(BaseModel):
     nome: str
-    montadora_id: str  # Presumindo que é um UUID em formato de string
+    montadora_id: str 
     valor_referencia: float
     motorizacao: float
-    turbo: Optional[bool] = False  # Opcional, com valor padrão
-    automatico: Optional[bool] = False  # Opcional, com valor padrão
+    turbo: Optional[bool] = False 
+    automatico: Optional[bool] = False  
 
 class ModeloResponse(BaseModel):
-    id: str  # ID do modelo gerado
+    id: str 
     nome: str
     montadora_id: str
     valor_referencia: float
@@ -26,20 +26,20 @@ class ModeloResponse(BaseModel):
     automatico: bool
 
     class Config:
-        orm_mode = True  # Permite usar o modelo com dados de ORM
+        orm_mode = True  
         
 
 class InputVeiculo(BaseModel):
-    modelo_id: str  # Presumindo que é um UUID em formato de string
+    modelo_id: str 
     cor: str
     ano_fabricacao: int
     ano_modelo: int
     valor: float
-    placa: str  # Placa deve ser única
-    vendido: Optional[bool] = False  # Opcional, com valor padrão
+    placa: str 
+    vendido: Optional[bool] = False  
 
 class VeiculoResponse(BaseModel):
-    id: str  # ID do veículo gerado
+    id: str  
     modelo_id: str
     cor: str
     ano_fabricacao: int
@@ -49,4 +49,4 @@ class VeiculoResponse(BaseModel):
     vendido: bool
 
     class Config:
-        orm_mode = True  # Permite usar o modelo com dados de ORM
+        orm_mode = True  

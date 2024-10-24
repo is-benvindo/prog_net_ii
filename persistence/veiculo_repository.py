@@ -8,7 +8,7 @@ class VeiculoRepository:
         query = db.query(Veiculo)
         if modelo_id:
             query = query.filter(Veiculo.modelo_id == modelo_id)
-        if cor:  # Aqui você pode querer filtrar pela cor, se isso fizer sentido no seu modelo
+        if cor: 
             query = query.filter(Veiculo.cor.ilike(f"%{cor}%"))
         return query.all()
 
@@ -27,7 +27,6 @@ class VeiculoRepository:
 
     def update(self, db: Session, veiculo: Veiculo): 
         try:
-            # Utilizando db.merge para atualizar o veículo
             veiculo_atualizado = db.merge(veiculo)  
             db.commit()
             return veiculo_atualizado  

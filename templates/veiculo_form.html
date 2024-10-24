@@ -8,34 +8,50 @@
 <div class="container">
     <h2>{% if veiculo %}Editar Veículo{% else %}Adicionar Veículo{% endif %}</h2>
 
-    <form method="post" action="{% if veiculo %}/veiculo_update/{{ veiculo.id }}{% else %}/veiculo_create/{% endif %}" class="form-section">
+    <form method="post" action="{% if veiculo %}/veiculo_update/{{ veiculo.id }}{% else %}/veiculo_create/{% endif %}" class="form-section vehicle-form">
         <input type="hidden" name="modelo_id" value="{{ modelo_id }}">
         
-        <label for="cor">Cor:</label>
-        <input type="text" name="cor" value="{{ veiculo.cor if veiculo else '' }}" required class="form-control">
+        <fieldset class="form-group">
+            <legend>Informações do Veículo</legend>
 
-        <label for="ano_fabricacao">Ano de Fabricação:</label>
-        <input type="number" name="ano_fabricacao" value="{{ veiculo.ano_fabricacao if veiculo else '' }}" required class="form-control">
+            <div class="field">
+                <label for="cor">Cor:</label>
+                <input type="text" name="cor" value="{{ veiculo.cor if veiculo else '' }}" required class="form-control">
+            </div>
 
-        <label for="ano_modelo">Ano do Modelo:</label>
-        <input type="number" name="ano_modelo" value="{{ veiculo.ano_modelo if veiculo else '' }}" required class="form-control">
+            <div class="field">
+                <label for="ano_fabricacao">Ano de Fabricação:</label>
+                <input type="number" name="ano_fabricacao" value="{{ veiculo.ano_fabricacao if veiculo else '' }}" required class="form-control">
+            </div>
 
-        <label for="valor">Valor:</label>
-        <input type="number" name="valor" step="0.01" value="{{ veiculo.valor if veiculo else '' }}" required class="form-control">
+            <div class="field">
+                <label for="ano_modelo">Ano do Modelo:</label>
+                <input type="number" name="ano_modelo" value="{{ veiculo.ano_modelo if veiculo else '' }}" required class="form-control">
+            </div>
 
-        <label for="placa">Placa:</label>
-        <input type="text" name="placa" value="{{ veiculo.placa if veiculo else '' }}" required class="form-control">
+            <div class="field">
+                <label for="valor">Valor:</label>
+                <input type="number" name="valor" step="0.01" value="{{ veiculo.valor if veiculo else '' }}" required class="form-control">
+            </div>
 
-        <label>Vendido:</label>
-        <div class="radio-group">
-            <input type="radio" id="vendido_sim" name="vendido" value="true" {% if veiculo and veiculo.vendido %}checked{% endif %} required>
-            <label for="vendido_sim">Sim</label>
-            
-            <input type="radio" id="vendido_nao" name="vendido" value="false" {% if veiculo and not veiculo.vendido %}checked{% endif %}>
-            <label for="vendido_nao">Não</label>
-        </div>
+            <div class="field">
+                <label for="placa">Placa:</label>
+                <input type="text" name="placa" value="{{ veiculo.placa if veiculo else '' }}" required class="form-control">
+            </div>
 
-        <button type="submit" class="btn">{% if veiculo %}Atualizar Veículo{% else %}Cadastrar Veículo{% endif %}</button>
+            <div class="field">
+                <label>Vendido:</label>
+                <div class="radio-group">
+                    <input type="radio" id="vendido_sim" name="vendido" value="true" {% if veiculo and veiculo.vendido %}checked{% endif %} required>
+                    <label for="vendido_sim">Sim</label>
+                    
+                    <input type="radio" id="vendido_nao" name="vendido" value="false" {% if veiculo and not veiculo.vendido %}checked{% endif %}>
+                    <label for="vendido_nao">Não</label>
+                </div>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-large">{% if veiculo %}Atualizar Veículo{% else %}Cadastrar Veículo{% endif %}</button>
     </form>
 </div>
 {% endblock %}

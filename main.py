@@ -22,7 +22,6 @@ montadora_repository = MontadoraRepository()
 modelo_repository = ModeloRepository()
 veiculo_repository = VeiculoRepository()
 
-# Rotas para Montadoras
 @app.get('/montadoras_list')
 def montadora_list(request: Request, nome: str = None, pais: str = None, db: Session = Depends(get_db)):
     montadoras = montadora_repository.get_all(db, nome=nome, pais=pais)
@@ -96,7 +95,16 @@ def salvar_dados_em_arquivo(db: Session = Depends(get_db)):
             linha = f"{modelo.nome};{modelo.valor_referencia};{modelo.motorizacao};{modelo.turbo};{modelo.automatico}\n"
             file.write(linha)
 
+    veiculos = veiculo_repository.get_all(db) 
+    veiculos_file_path = os.path.join(data_folder, 'veiculos.txt')
+
+    with open(veiculos_file_path, 'w') as file:
+        for veiculo in veiculos:
+            linha = f"{veiculo.cor};{veiculo.ano_fabricacao};{veiculo.ano_modelo};{veiculo.valor};{veiculo.placa};{veiculo.vendido}\n"
+            file.write(linha)
+
     return RedirectResponse('/montadoras_list', status_code=303)
+
 
 @app.get("/montadora/{montadora_id}/modelos_list")
 def modelos_list(montadora_id: str, request: Request, db: Session = Depends(get_db)):
@@ -192,15 +200,14 @@ def modelo_update(
     modelo_repository.update(db, modelo_existente)
     return RedirectResponse(f'/montadora/{modelo_existente.montadora_id}/modelos_list', status_code=303)
 
-# Inicializa o roteador para veículos
 router = APIRouter()
 
-# Rota para renderizar o formulário de criação de veículo
+
 @app.get("/veiculo_form/{modelo_id}")
 def veiculo_form(modelo_id: str, request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("veiculo_form.html", {"request": request, "modelo_id": modelo_id})
 
-# Rota para criar um novo veículo e depois redirecionar para a lista de veículos
+
 @app.post("/veiculo_create/")
 def veiculo_create(
     modelo_id: str = Form(...),
@@ -228,7 +235,7 @@ def veiculo_create(
     except Exception as e:
         raise HTTPException(status_code=422, detail=str(e))
 
-# Rota para listar veículos
+
 @app.get("/modelo/{modelo_id}/veiculos_list")
 def veiculos_list(
     modelo_id: str,
@@ -239,10 +246,9 @@ def veiculos_list(
     if modelo is None:
         raise HTTPException(status_code=404, detail="Modelo não encontrado")
 
-    # Inicia a consulta para veículos
+  
     query = db.query(Veiculo).filter(Veiculo.modelo_id == modelo_id)
 
-    # Captura os parâmetros de filtro da requisição
     cor = request.query_params.get("cor")
     ano_fabricacao = request.query_params.get("ano_fabricacao")
     ano_modelo = request.query_params.get("ano_modelo")
@@ -250,9 +256,9 @@ def veiculos_list(
     placa = request.query_params.get("placa")
     vendido = request.query_params.get("vendido")
 
-    # Adiciona filtros à consulta se os parâmetros foram fornecidos
+
     if cor:
-        query = query.filter(Veiculo.cor.ilike(f"%{cor}%"))  # Busca parcial para cor
+        query = query.filter(Veiculo.cor.ilike(f"%{cor}%"))
     if ano_fabricacao:
         query = query.filter(Veiculo.ano_fabricacao == ano_fabricacao)
     if ano_modelo:
@@ -260,11 +266,11 @@ def veiculos_list(
     if valor:
         query = query.filter(Veiculo.valor == valor)
     if placa:
-        query = query.filter(Veiculo.placa.ilike(f"%{placa}%"))  # Busca parcial para placa
-    if vendido is not None:  # verifica se o parâmetro é fornecido
+        query = query.filter(Veiculo.placa.ilike(f"%{placa}%"))
+    if vendido is not None: 
         query = query.filter(Veiculo.vendido == (vendido == 'true'))
 
-    # Executa a consulta e obtém a lista de veículos
+
     veiculos = query.all()
 
     return templates.TemplateResponse(
@@ -277,14 +283,14 @@ def veiculos_list(
     )
 
 
-# Editar veículo
+
 from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 router = APIRouter()
 
-# Editar veículo
+
 @router.get('/veiculo_edit/{veiculo_id}')
 def veiculo_edit(request: Request, veiculo_id: str, db: Session = Depends(get_db)):
     veiculo = veiculo_repository.get_by_id(db, veiculo_id)
@@ -297,7 +303,7 @@ def veiculo_edit(request: Request, veiculo_id: str, db: Session = Depends(get_db
         'modelo_id': veiculo.modelo_id
     })
 
-# Atualizar veículo
+
 @app.post('/veiculo_update/{veiculo_id}')
 def veiculo_update(
     veiculo_id: str,
@@ -315,21 +321,20 @@ def veiculo_update(
     if not veiculo_existente:
         return {"error": "Veículo não encontrado."}
 
-    # Atualiza os dados do veículo existente
+
     veiculo_existente.cor = cor
     veiculo_existente.ano_fabricacao = ano_fabricacao
     veiculo_existente.ano_modelo = ano_modelo
     veiculo_existente.valor = valor
     veiculo_existente.placa = placa
     veiculo_existente.vendido = vendido
-    veiculo_existente.modelo_id = modelo_id  # Se o veículo tem uma relação com um modelo
+    veiculo_existente.modelo_id = modelo_id 
 
     veiculo_repository.update(db, veiculo_existente)
 
     return RedirectResponse(f'/montadora/{veiculo_existente.montadora_id}/veiculos_list', status_code=303)
 
 
-# Deletar veículo
 @router.post('/veiculo_delete/{veiculo_id}')
 def veiculo_delete(veiculo_id: str, db: Session = Depends(get_db)):
     veiculo = veiculo_repository.get_by_id(db, veiculo_id)
@@ -342,5 +347,4 @@ def veiculo_delete(veiculo_id: str, db: Session = Depends(get_db)):
     return RedirectResponse(f'/modelo/{modelo_id}/veiculos_list', status_code=303)
 
 
-# Adiciona o roteador à aplicação FastAPI
 app.include_router(router)

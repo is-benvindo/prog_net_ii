@@ -7,7 +7,7 @@ from persistence.database import Base
 class Montadora(Base):
     __tablename__ = 'montadora'
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)  # Continua com UUID
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
     nome = Column(String, index=True)
     pais = Column(String)
     ano_fundacao = Column(Integer)
@@ -16,9 +16,9 @@ class Montadora(Base):
 
 
 class Modelo(Base):
-    __tablename__ = 'modelo'  # Nome correto da tabela (no singular)
+    __tablename__ = 'modelo'  
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)  # Continua com UUID
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) 
     nome = Column(String, nullable=False)
     montadora_id = Column(UUID(as_uuid=True), ForeignKey('montadora.id'), nullable=False)
     valor_referencia = Column(Numeric, nullable=False)
@@ -32,10 +32,10 @@ class Modelo(Base):
 
 
 class Veiculo(Base):
-    __tablename__ = 'veiculo'  # Nome no singular, para consistência
+    __tablename__ = 'veiculo'
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)  # Continua com UUID
-    modelo_id = Column(UUID(as_uuid=True), ForeignKey('modelo.id'), nullable=False)  # Corrigido o nome da ForeignKey
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)  
+    modelo_id = Column(UUID(as_uuid=True), ForeignKey('modelo.id'), nullable=False) 
     cor = Column(String, nullable=False)
     ano_fabricacao = Column(Integer, nullable=False)
     ano_modelo = Column(Integer, nullable=False)

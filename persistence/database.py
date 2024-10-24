@@ -7,10 +7,9 @@ DATABASE_URL = "postgresql://postgres:senha@localhost/patrocars"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Atualize a importação
-from sqlalchemy.orm import declarative_base  # Nova importação
+from sqlalchemy.orm import declarative_base  
 
-Base = declarative_base()  # Não precisa mudar esta linha
+Base = declarative_base() 
 
 def get_db():
     db = SessionLocal()
@@ -19,9 +18,8 @@ def get_db():
     finally:
         db.close()
 
-# Adicione a criação das tabelas
 def init_db():
     Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
-    init_db()  # Execute a criação das tabelas
+    init_db()
