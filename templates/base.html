@@ -4,22 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montadoras</title>
+    <title>PatroCars 2000</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="navbar">
+    <header class="navbar">
         <h1>PatroCars 2000</h1>
-        <div>
+        <nav>
             <a href="/montadoras_list">Lista de Montadoras</a>
-            <a href="/montadoras_form">Nova Montadora</a>
             <a href="/montadora_save_txt">Salvar em Arquivo</a>
-        </div>
-    </div>
+        </nav>
+    </header>
 
-    <div class="container">
+    <main class="container">
         {% block content %}
+            <section class="montadoras-container">
+                {% for montadora in montadoras %}
+                    <div class="montadora-card">
+                        <strong><a href="/montadora/{{ montadora.id }}/modelos_list" class="montadora-link">{{ montadora.nome }}</a></strong>
+                        <p>País: {{ montadora.pais }}</p>
+                        <p>Ano de Fundação: {{ montadora.ano_fundacao }}</p>
+                        <div class="montadora-actions">
+                            <a href="/montadoras_edit/{{ montadora.id }}" class="btn btn-edit">Editar</a>
+                            <form action="/montadora_delete/{{ montadora.id }}" method="post" class="delete-form">
+                                <button type="submit" class="btn btn-delete">Deletar</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
         {% endblock %}
-    </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 PatroCars 2000. Todos os direitos reservados.</p>
+            <p>
+                <a href="/sobre">Sobre Nós</a> | 
+                <a href="/contato">Contato</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Código JavaScript removido
+    </script>
 </body>
 </html>

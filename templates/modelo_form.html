@@ -1,42 +1,46 @@
 {% extends "base.html" %}
 
+{% block title %}{% if modelo %}Editar Modelo{% else %}Adicionar Novo Modelo{% endif %}{% endblock %}
+
+{% block title_page %}
+    <h1>{% if modelo %}Editar Modelo{% else %}Adicionar Novo Modelo{% endif %}</h1>
+{% endblock %}
+
 {% block content %}
-<h1>{% if modelo %}Editar Modelo{% else %}Adicionar Novo Modelo{% endif %}</h1>
+    {% if mensagem %}
+        <div class="alert alert-info">{{ mensagem }}</div>
+    {% endif %}
 
-{% if mensagem %}
-    <div class="alert alert-info">{{ mensagem }}</div>
-{% endif %}
+    <form action="{% if modelo %}/modelo_update/{{ modelo.id }}{% else %}/modelo_save{% endif %}" method="post" class="form-section">
+        <input type="hidden" name="montadora_id" value="{{ montadora_id }}">
 
-<form action="{% if modelo %}/modelo_update/{{ modelo.id }}{% else %}/modelo_save{% endif %}" method="post">
-    <input type="hidden" name="montadora_id" value="{{ montadora_id }}">
+        <label for="nome">Nome do Modelo:</label>
+        <input type="text" id="nome" name="nome" value="{{ modelo.nome if modelo else '' }}" required placeholder="Insira o nome do modelo" class="form-control">
 
-    <label for="nome">Nome do Modelo:</label>
-    <input type="text" id="nome" name="nome" value="{{ modelo.nome if modelo else '' }}" required placeholder="Insira o nome do modelo">
+        <label for="valor_referencia">Valor de Referência:</label>
+        <input type="number" id="valor_referencia" name="valor_referencia" value="{{ modelo.valor_referencia if modelo else '' }}" required step="0.01" min="0" placeholder="Ex: 19999.99" class="form-control">
 
-    <label for="valor_referencia">Valor de Referência:</label>
-    <input type="number" id="valor_referencia" name="valor_referencia" value="{{ modelo.valor_referencia if modelo else '' }}" required step="0.01" min="0" placeholder="Ex: 19999.99">
+        <label for="motorizacao">Motorização:</label>
+        <input type="number" id="motorizacao" name="motorizacao" value="{{ modelo.motorizacao if modelo else '' }}" required step="0.1" min="0" placeholder="Ex: 1.5" class="form-control">
 
-    <label for="motorizacao">Motorização:</label>
-    <input type="number" id="motorizacao" name="motorizacao" value="{{ modelo.motorizacao if modelo else '' }}" required step="0.1" min="0" placeholder="Ex: 1.5">
+        <label>Turbo:</label>
+        <div class="radio-group">
+            <input type="radio" id="turbo_sim" name="turbo" value="true" {% if modelo.turbo %}checked{% endif %} required>
+            <label for="turbo_sim">Sim</label>
+            
+            <input type="radio" id="turbo_nao" name="turbo" value="false" {% if modelo is not none and not modelo.turbo %}checked{% endif %}>
+            <label for="turbo_nao">Não</label>
+        </div>
 
-    <label>Turbo:</label>
-    <div>
-        <input type="radio" id="turbo_sim" name="turbo" value="true" {% if modelo.turbo %}checked{% endif %} required>
-        <label for="turbo_sim">Sim</label>
-        
-        <input type="radio" id="turbo_nao" name="turbo" value="false" {% if modelo is not none and not modelo.turbo %}checked{% endif %}>
-        <label for="turbo_nao">Não</label>
-    </div>
+        <label>Automático:</label>
+        <div class="radio-group">
+            <input type="radio" id="automatico_sim" name="automatico" value="true" {% if modelo.automatico %}checked{% endif %} required>
+            <label for="automatico_sim">Sim</label>
+            
+            <input type="radio" id="automatico_nao" name="automatico" value="false" {% if modelo is not none and not modelo.automatico %}checked{% endif %}>
+            <label for="automatico_nao">Não</label>
+        </div>
 
-    <label>Automático:</label>
-    <div>
-        <input type="radio" id="automatico_sim" name="automatico" value="true" {% if modelo.automatico %}checked{% endif %} required>
-        <label for="automatico_sim">Sim</label>
-        
-        <input type="radio" id="automatico_nao" name="automatico" value="false" {% if modelo is not none and not modelo.automatico %}checked{% endif %}>
-        <label for="automatico_nao">Não</label>
-    </div>
-
-    <button type="submit" class="mt-4 p-2 bg-blue-500 text-white rounded">{% if modelo %}Atualizar{% else %}Salvar{% endif %}</button>
-</form>
+        <button type="submit" class="btn mt-4">{% if modelo %}Atualizar{% else %}Salvar{% endif %}</button>
+    </form>
 {% endblock %}

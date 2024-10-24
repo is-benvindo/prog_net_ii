@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Veículos{% endblock %}
+
+{% block title_page %}Veículos do Modelo: {{ modelo.nome }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Veículos do Modelo: {{ modelo.nome }}</h2>
+
+        <div class="filter-section">
+            <form method="get" action="/modelo/{{ modelo.id }}/veiculos_list" class="filter-form">
+                <input type="text" name="cor" placeholder="Filtrar por cor" value="{{ request.query_params.get('cor', '') }}" class="form-control">
+
+                <input type="number" name="ano_fabricacao" placeholder="Filtrar por ano de fabricação" value="{{ request.query_params.get('ano_fabricacao', '') }}" class="form-control">
+
+                <input type="number" name="ano_modelo" placeholder="Filtrar por ano do modelo" value="{{ request.query_params.get('ano_modelo', '') }}" class="form-control">
+
+                <input type="number" name="valor" step="0.01" placeholder="Filtrar por valor" value="{{ request.query_params.get('valor', '') }}" class="form-control">
+
+                <input type="text" name="placa" placeholder="Filtrar por placa" value="{{ request.query_params.get('placa', '') }}" class="form-control">
+
+                <label>Vendido:</label>
+                <div>
+                    <input type="radio" id="vendido_sim" name="vendido" value="true" {% if request.query_params.get('vendido') == 'true' %}checked{% endif %}>
+                    <label for="vendido_sim">Sim</label>
+                    
+                    <input type="radio" id="vendido_nao" name="vendido" value="false" {% if request.query_params.get('vendido') == 'false' %}checked{% endif %}>
+                    <label for="vendido_nao">Não</label>
+                </div>
+
+                <button type="submit" class="btn">Filtrar</button>
+            </form>
+
+            <a href="/veiculo_form/{{ modelo.id }}" class="btn btn-add">Adicionar Veículo</a>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cor</th>
+                    <th>Ano de Fabricação</th>
+                    <th>Ano do Modelo</th>
+                    <th>Valor</th>
+                    <th>Placa</th>
+                    <th>Vendido</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for veiculo in veiculos %}
+                    <tr>
+                        <td>{{ veiculo.cor }}</td>
+                        <td>{{ veiculo.ano_fabricacao }}</td>
+                        <td>{{ veiculo.ano_modelo }}</td>
+                        <td>R$ {{ veiculo.valor }}</td>
+                        <td>{{ veiculo.placa }}</td>
+                        <td>{{ 'Sim' if veiculo.vendido else 'Não' }}</td>
+                        <td>
+                            <a href="/veiculo_edit/{{ veiculo.id }}" class="btn btn-primary">Editar</a>
+                            <form action="/veiculo_delete/{{ veiculo.id }}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja deletar este veículo?');">
+                                <button type="submit" class="btn btn-danger">Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if not veiculos %}
+            <p>Nenhum veículo encontrado.</p>
+        {% endif %}
+    </div>
+{% endblock %}

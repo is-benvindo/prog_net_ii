@@ -7,37 +7,41 @@
 {% block content %}
     <h2>Modelos da Montadora: {{ montadora.nome }}</h2>
 
-    <form method="get" action="/modelos_list/{{ montadora.id }}">
-        <input type="text" name="nome" placeholder="Filtrar por modelo" value="{{ request.query_params.get('nome', '') }}">
-        
-        <label for="automatico">Transmissão:</label>
-        <select name="automatico" id="automatico">
-            <option value="">-- Selecione --</option>
-            <option value="true" {% if request.query_params.get('automatico') == 'true' %}selected{% endif %}>Automático</option>
-            <option value="false" {% if request.query_params.get('automatico') == 'false' %}selected{% endif %}>Manual</option>
-        </select>
+    <div class="filter-section">
+        <form method="get" action="/montadora/{{ montadora.id }}/modelos_list" class="filter-form">
+            <input type="text" name="nome" placeholder="Filtrar por modelo" value="{{ request.query_params.get('nome', '') }}" class="form-control">
+            
+            <label for="automatico">Transmissão:</label>
+            <select name="automatico" id="automatico" class="form-control">
+                <option value="">-- Selecione --</option>
+                <option value="true" {% if request.query_params.get('automatico') == 'true' %}selected{% endif %}>Automático</option>
+                <option value="false" {% if request.query_params.get('automatico') == 'false' %}selected{% endif %}>Manual</option>
+            </select>
 
-        <input type="number" name="motorizacao" placeholder="Filtrar por motorização" value="{{ request.query_params.get('motorizacao', '') }}" step="0.1" min="0">
-        
-        <button type="submit">Filtrar</button>
-    </form>
+            <input type="number" name="motorizacao" placeholder="Filtrar por motorização" value="{{ request.query_params.get('motorizacao', '') }}" step="0.1" min="0" class="form-control">
+            
+            <button type="submit" class="btn btn-filter">Filtrar</button>
+        </form>
 
-    <button>
-        <a href="/modelo_form/{{ montadora.id }}" class="btn btn-secondary">Adicionar Modelo</a>
-    </button>
+        <a href="/modelo_form/{{ montadora.id }}" class="btn btn-add">Adicionar Modelo</a>
+    </div>
 
-    <ul>
+    <section class="models-container">
         {% for modelo in modelos %}
-            <li>
-                {{ modelo.nome }} - R$ {{ modelo.valor_referencia }} - {{ modelo.motorizacao }} - {{ 'Turbo' if modelo.turbo else 'Sem Turbo' }} - {{ 'Automático' if modelo.automatico else 'Manual' }}
-                <button>
+            <div class="model-card">
+                <h3><a href="/modelo/{{ modelo.id }}/veiculos_list" class="model-link">{{ modelo.nome }}</a></h3>
+                <p>Valor: R$ {{ modelo.valor_referencia }}</p>
+                <p>Motorização: {{ modelo.motorizacao }}</p>
+                <p>{{ 'Turbo' if modelo.turbo else 'Sem Turbo' }}</p>
+                <p>{{ 'Automático' if modelo.automatico else 'Manual' }}</p>
+                <div class="model-actions">
                     <a href="/modelos_edit/{{ modelo.id }}" class="btn btn-primary">Editar</a>
-                </button>
-                <form action="/modelos_delete/{{ modelo.id }}" method="post" style="display:inline;">
-                    <button type="submit" onclick="return confirm('Tem certeza que deseja deletar este modelo?');">Deletar</button>
-                </form>
-            </li>
+                    <form action="/modelos_delete/{{ modelo.id }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-delete" onclick="return confirm('Tem certeza que deseja deletar este modelo?');">Deletar</button>
+                    </form>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </section>
 
 {% endblock %}

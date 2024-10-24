@@ -1,104 +1,152 @@
-body {
-    background-color: #2c2c2c;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
+/* Reset básico */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #2c3e50; /* Fundo escuro */
+    color: #ecf0f1; /* Texto claro */
 }
 
 .navbar {
-    background-color: #000000;
-    padding: 1em;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Alinha título verticalmente */
+    justify-content: flex-start; /* Alinha itens à esquerda */
+    padding: 1rem;
+    background-color: #1abc9c; /* Verde água */
 }
 
 .navbar h1 {
-    color: #ffffff;
-    font-size: 24px;
-    margin: 0;
+    color: white;
+    margin-left: 1rem; /* Espaçamento à esquerda do título */
 }
 
-.navbar a {
-    color: #ffffff;
+.navbar nav a {
+    color: white;
+    margin: 0 1rem;
     text-decoration: none;
-    padding: 0 15px;
-}
-
-.navbar a:hover {
-    color: #f0a500;
 }
 
 .container {
-    margin: 20px;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
 }
 
-button {
-    background-color: #f0a500;
-    color: #000000;
+.filter-section {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center; /* Alinha os itens do formulário verticalmente */
+}
+
+.filter-form {
+    display: flex;
+    align-items: center; /* Alinha os itens do formulário verticalmente */
+    margin-right: 1rem; /* Espaço à direita para afastar do botão */
+}
+
+.btn-add {
+    background-color: #1abc9c; /* Verde água */
+    color: white;
     border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #ffaa00;
-}
-
-button {
-    border-radius: 10px; 
-    margin: 5px 0;
-    padding: 10px 15px;
-}
-
-form {
-    display: inline; 
-    margin-left: 5px;
-}
-
-
-form input[type="text"], form input[type="submit"] {
-    margin: 5px;
-    padding: 10px;
     border-radius: 5px;
-    border: 1px solid #dddddd;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+    background-color: #16a085; /* Verde escuro */
+    margin-left: 0.5rem; /* Espaço à esquerda para destacar ao passar o mouse */
 }
 
 .form-control {
-    margin: 5px 0; 
-    padding: 10px; 
-    border-radius: 5px; 
-    border: 1px solid #dddddd;
-    width: calc(100% - 22px); 
+    padding: 0.5rem;
+    border: 1px solid #34495e; /* Cinza mais escuro */
+    border-radius: 5px;
+    margin: 0 0.5rem; /* Reduzir o espaçamento entre os campos de filtro */
+    width: 200px; /* Ajuste a largura conforme necessário */
 }
 
-form input[type="submit"] {
-    background-color: #f0a500;
-    color: #000000;
+.btn {
+    background-color: #16a085; /* Verde escuro */
+    color: white;
     border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
     cursor: pointer;
-    border-radius: 10px;
-    padding: 10px 15px;
-    margin-top: 10px; 
+    transition: background-color 0.3s;
 }
 
-form input[type="submit"]:hover {
-    background-color: #ffaa00;
+.btn:hover {
+    background-color: #149174; /* Verde mais escuro */
 }
 
 .status {
-    background-color: #444444; 
-    border-radius: 5px; 
-    padding: 15px;
-    margin-top: 20px;
-    color: #f0a500;
+    margin-bottom: 2rem;
 }
 
-.status h3 {
-    margin: 0 0 10px 0; 
+.form-section {
+    margin: 2rem 0; /* Espaçamento vertical para a seção do formulário */
 }
 
-.status p {
-    margin: 0;
+.montadoras-container, .models-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem; /* Espaçamento entre os cartões */
+}
+
+.montadora-card, .model-card {
+    background-color: #34495e; /* Cinza claro */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.montadora-card:hover, .model-card:hover {
+    transform: translateY(-5px);
+}
+
+.montadora-link, .model-link {
+    color: #1abc9c; /* Verde água */
+    text-decoration: none;
+}
+
+.montadora-actions, .model-actions {
+    margin-top: 1rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem; /* Espaçamento entre os botões */
+}
+
+.btn-edit {
+    background-color: #1abc9c; /* Verde água */
+}
+
+.btn-delete {
+    background-color: #e74c3c; /* Vermelho */
+}
+
+.btn-edit:hover {
+    background-color: #16a085; /* Verde escuro */
+}
+
+.btn-delete:hover {
+    background-color: #c0392b; /* Vermelho escuro */
+}
+
+footer {
+    background-color: #1abc9c; /* Verde água */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }

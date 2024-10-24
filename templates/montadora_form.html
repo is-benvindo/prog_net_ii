@@ -11,10 +11,12 @@
 {% endblock %}
 
 {% block content %}
-<form action="{% if montadora %} /montadora_update/{{ montadora.id }} {% else %} /montadora_save {% endif %}" method="post">
-  <input class="form-control" type="text" name="nome" placeholder="Nome da Montadora" value="{{ montadora.nome if montadora else '' }}">
-  <input class="form-control" type="text" name="pais" placeholder="País" value="{{ montadora.pais if montadora else '' }}">
-  <input class="form-control" type="number" name="ano" placeholder="Ano Fundação" value="{{ montadora.ano_fundacao if montadora else '' }}">
-  <input class="form-control" type="submit" value="{% if montadora %} Atualizar Montadora {% else %} Salvar Montadora {% endif %}" />
-</form>
+<section class="form-section">
+  <form action="{% if montadora %} /montadora_update/{{ montadora.id }} {% else %} /montadora_save {% endif %}" method="post">
+    <input class="form-control" type="text" name="nome" placeholder="Nome da Montadora" value="{{ montadora.nome if montadora else '' }}" required>
+    <input class="form-control" type="text" name="pais" placeholder="País" value="{{ montadora.pais if montadora else '' }}" required>
+    <input class="form-control" type="number" name="ano" placeholder="Ano Fundação" value="{{ montadora.ano_fundacao if montadora else '' }}" required>
+    <input class="form-control btn" type="submit" value="{% if montadora %} Atualizar Montadora {% else %} Salvar Montadora {% endif %}" />
+  </form>
+</section>
 {% endblock %}

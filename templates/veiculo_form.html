@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{% if veiculo %}Editar Veículo{% else %}Adicionar Veículo{% endif %}{% endblock %}
+
+{% block title_page %}{% if veiculo %}Editar Veículo{% else %}Adicionar Veículo{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{% if veiculo %}Editar Veículo{% else %}Adicionar Veículo{% endif %}</h2>
+
+    <form method="post" action="{% if veiculo %}/veiculo_update/{{ veiculo.id }}{% else %}/veiculo_create/{% endif %}" class="form-section">
+        <input type="hidden" name="modelo_id" value="{{ modelo_id }}">
+        
+        <label for="cor">Cor:</label>
+        <input type="text" name="cor" value="{{ veiculo.cor if veiculo else '' }}" required class="form-control">
+
+        <label for="ano_fabricacao">Ano de Fabricação:</label>
+        <input type="number" name="ano_fabricacao" value="{{ veiculo.ano_fabricacao if veiculo else '' }}" required class="form-control">
+
+        <label for="ano_modelo">Ano do Modelo:</label>
+        <input type="number" name="ano_modelo" value="{{ veiculo.ano_modelo if veiculo else '' }}" required class="form-control">
+
+        <label for="valor">Valor:</label>
+        <input type="number" name="valor" step="0.01" value="{{ veiculo.valor if veiculo else '' }}" required class="form-control">
+
+        <label for="placa">Placa:</label>
+        <input type="text" name="placa" value="{{ veiculo.placa if veiculo else '' }}" required class="form-control">
+
+        <label>Vendido:</label>
+        <div class="radio-group">
+            <input type="radio" id="vendido_sim" name="vendido" value="true" {% if veiculo and veiculo.vendido %}checked{% endif %} required>
+            <label for="vendido_sim">Sim</label>
+            
+            <input type="radio" id="vendido_nao" name="vendido" value="false" {% if veiculo and not veiculo.vendido %}checked{% endif %}>
+            <label for="vendido_nao">Não</label>
+        </div>
+
+        <button type="submit" class="btn">{% if veiculo %}Atualizar Veículo{% else %}Cadastrar Veículo{% endif %}</button>
+    </form>
+</div>
+{% endblock %}

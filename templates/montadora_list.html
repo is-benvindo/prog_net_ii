@@ -1,36 +1,72 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PatroCars 2000</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <h1>PatroCars 2000</h1>
+        <nav>
+            <a href="/montadoras_list">Lista de Montadoras</a>
+            <a href="/montadora_save_txt">Salvar em Arquivo</a>
+        </nav>
+    </header>
 
-{% block title %} Montadoras {% endblock %}
-
-{% block title_page %} Lista de Montadoras Cadastradas {% endblock %}
-
-{% block content %}
-
-    <form method="get" action="/montadoras_list">
-        <input type="text" name="nome" placeholder="Filtrar por nome" value="{{ request.query_params.get('nome', '') }}">
-        <input type="text" name="pais" placeholder="Filtrar por país" value="{{ request.query_params.get('pais', '') }}">
-        <button type="submit">Filtrar</button>
-    </form>
-    
-    <div class="status">
-        <h3>Status dos Cadastros</h3>
-        <p>Temos {{ total_montadoras }} Montadoras Cadastradas:</p>
-    </div>
-
-    <ul>
-        {% for montadora in montadoras %}
-            <li>
-                <strong><a href="/montadora/{{ montadora.id }}/modelos_list">{{ montadora.nome }}</a></strong> - {{ montadora.pais }} - {{ montadora.ano_fundacao }}
-                <button>
-                    <a href="/montadoras_edit/{{ montadora.id }}" class="btn btn-primary">Editar</a>
-                </button>
-                <form action="/montadora_delete/{{ montadora.id }}" method="post" style="display:inline;">
-                    <button type="submit">Deletar</button>
+    <main class="container">
+        {% block content %}
+            <section class="filter-section">
+                <form method="get" action="/montadoras_list" class="filter-form">
+                    <a href="/montadoras_form" class="btn btn-add">Adicionar Montadora</a>
+                    <input type="text" name="nome" placeholder="Filtrar por nome" value="{{ request.query_params.get('nome', '') }}" class="form-control small-input">
+                    <input type="text" name="pais" placeholder="Filtrar por país" value="{{ request.query_params.get('pais', '') }}" class="form-control small-input">
+                    <button type="submit" class="btn btn-filter">Filtrar</button>
                 </form>
-            </li>
-        {% endfor %}
-    </ul>
+            </section>
+            
+            <section class="status">
+                <h3>Status dos Cadastros</h3>
+                <p>Temos <strong>{{ total_montadoras }}</strong> Montadoras Cadastradas:</p>
+            </section>
 
-    <hr>
-    
-{% endblock %}
+            <section class="montadoras-container">
+                {% for montadora in montadoras %}
+                    <div class="montadora-card">
+                        <h4><a href="/montadora/{{ montadora.id }}/modelos_list" class="montadora-link">{{ montadora.nome }}</a></h4>
+                        <div class="montadora-info">
+                            <p>País: {{ montadora.pais }}</p>
+                            <p>Ano de Fundação: {{ montadora.ano_fundacao }}</p>
+                        </div>
+                        <div class="montadora-actions">
+                            <div class="button-group">
+                                <a href="/montadoras_edit/{{ montadora.id }}" class="btn btn-edit">Editar</a>
+                                <form action="/montadora_delete/{{ montadora.id }}" method="post" class="delete-form">
+                                    <button type="submit" class="btn btn-delete">Deletar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </section>
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 PatroCars 2000. Todos os direitos reservados.</p>
+            <p>
+                <a href="/sobre">Sobre Nós</a> | 
+                <a href="/contato">Contato</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Código JavaScript removido
+    </script>
+</body>
+</html>
